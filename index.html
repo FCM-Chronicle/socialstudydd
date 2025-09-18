@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>송파에서 시작되는 미래</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+            background: #000;
+            color: white;
+        }
+
+        .presentation-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100%);
+        }
+
+        /* Slide 1 - Main Title */
+        .slide-1 {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #764ba2 100%);
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 6rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #fff, #64b5f6, #42a5f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: titleGlow 3s ease-in-out infinite alternate;
+        }
+
+        .main-subtitle {
+            font-size: 2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .navigation-hint {
+            position: absolute;
+            bottom: 2rem;
+            right: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            font-size: 0.9rem;
+        }
+
+        /* Slide 2 - Slogan Breakdown */
+        .slide-2 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+        }
+
+        .slogan-breakdown {
+            max-width: 1000px;
+        }
+
+        .slogan-part {
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .slogan-text {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .slogan-meaning {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        /* Slide 3 - Jamsil Focus */
+        .slide-3 {
+            background: linear-gradient(135deg, #2d3748 0%, #4a5568 50%, #667eea 100%);
+        }
+
+        .jamsil-content {
+            max-width: 1200px;
+            text-align: center;
+        }
+
+        .slide-title {
+            font-size: 4rem;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #fff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .jamsil-description {
+            font-size: 1.8rem;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .jamsil-highlights {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .highlight-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .highlight-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .highlight-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .highlight-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #64b5f6;
+        }
+
+        /* Slide 4 - GitHub Info */
+        .slide-4 {
+            background: linear-gradient(135deg, #1a202c 0%, #2d3748 50%, #4a5568 100%);
+            text-align: center;
+        }
+
+        .github-content {
+            max-width: 800px;
+        }
+
+        .github-title {
+            font-size: 4rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(45deg, #fff, #bee3f8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .github-description {
+            font-size: 1.6rem;
+            margin-bottom: 3rem;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .github-info-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .github-features {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .slide-counter {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            z-index: 1000;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64b5f6, #42a5f5, #1976d2);
+            transition: width 0.8s ease;
+            z-index: 1000;
+        }
+
+        .floating-element {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 20px rgba(100, 181, 246, 0.5); }
+            100% { text-shadow: 0 0 40px rgba(100, 181, 246, 0.8), 0 0 80px rgba(66, 165, 245, 0.3); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @media (max-width: 768px) {
+            .main-title { font-size: 3.5rem; }
+            .slide-title { font-size: 2.5rem; }
+            .slogan-text { font-size: 2.5rem; }
+            .jamsil-highlights { grid-template-columns: 1fr; }
+            .github-features { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="presentation-container">
+        <!-- Slide 1: Main Title -->
+        <div class="slide slide-1 active">
+            <div class="floating-element" style="width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="floating-element" style="width: 120px; height: 120px; top: 60%; right: 15%; animation-delay: -2s;"></div>
+            <div class="floating-element" style="width: 60px; height: 60px; bottom: 20%; left: 20%; animation-delay: -4s;"></div>
+            
+            <div>
+                <h1 class="main-title">송파에서 시작되는 미래</h1>
+                <p class="main-subtitle">Your Future Starts Here</p>
+                <p style="font-size: 1.3rem; opacity: 0.7; margin-top: 2rem;">송파구에서 계획해보는 당신의 미래</p>
+            </div>
+            
+            <div class="navigation-hint">
+                <p>← → 키로 이동</p>
+                <p>스페이스바로 다음</p>
+            </div>
+        </div>
+
+        <!-- Slide 2: Slogan Breakdown -->
+        <div class="slide slide-2">
+            <div class="slogan-breakdown">
+                <div class="slogan-part">
+                    <div class="slogan-text">송파에서</div>
+                    <div class="slogan-meaning">
+                        이미 완성된 최고의 인프라<br>
+                        살기 좋은 환경이 갖춰진 곳
+                    </div>
+                </div>
+                
+                <div class="slogan-part">
+                    <div class="slogan-text">시작되는</div>
+                    <div class="slogan-meaning">
+                        당신의 계획과 꿈을 실현할<br>
+                        새로운 출발점
+                    </div>
+                </div>
+                
+                <div class="slogan-part">
+                    <div class="slogan-text">미래</div>
+                    <div class="slogan-meaning">
+                        송파구에서 계획해보세요<br>
+                        당신만의 특별한 내일을
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Why Songpa -->
+        <div class="slide slide-3">
+            <div class="jamsil-content">
+                <h2 class="slide-title">왜 송파구일까요?</h2>
+                <p class="jamsil-description">
+                    이미 완성된 훌륭한 인프라와 살기 좋은 환경<br>
+                    당신의 미래를 계획하기에 최적의 장소입니다
+                </p>
+                
+                <div class="jamsil-highlights">
+                    <div class="highlight-card">
+                        <span class="highlight-icon">🏘️</span>
+                        <h3>완벽한 인프라</h3>
+                        <p>교통, 교육, 문화, 의료 시설이 모두 갖춰진 최적의 생활환경</p>
+                    </div>
+                    <div class="highlight-card">
+                        <span class="highlight-icon">🌳</span>
+                        <h3>살기 좋은 환경</h3>
+                        <p>한강과 공원이 어우러진 쾌적한 주거지, 안전하고 편리한 도시</p>
+                    </div>
+                    <div class="highlight-card">
+                        <span class="highlight-icon">💡</span>
+                        <h3>무한한 가능성</h3>
+                        <p>당신의 꿈과 계획을 실현할 수 있는 모든 조건이 준비된 곳</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: GitHub Info -->
+        <div class="slide slide-4">
+            <div class="github-content">
+                <h2 class="github-title">오픈소스로 공유</h2>
+                <p class="github-description">
+                    이 프레젠테이션은 GitHub에 공개되어<br>
+                    누구나 사용하고 개선할 수 있습니다
+                </p>
+                
+                <div class="github-info-box">
+                    <h3 style="color: #64b5f6; margin-bottom: 2rem; font-size: 2rem;">📂 GitHub Repository</h3>
+                    
+                    <div class="github-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">💻</span>
+                            <h4>소스코드 공개</h4>
+                            <p>HTML, CSS, JavaScript 모든 코드 오픈</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🔧</span>
+                            <h4>자유로운 수정</h4>
+                            <p>필요에 맞게 커스터마이징 가능</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🤝</span>
+                            <h4>커뮤니티 기여</h4>
+                            <p>이슈 제보와 개선 아이디어 환영</p>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">⭐</span>
+                            <h4>무료 사용</h4>
+                            <p>개인, 상업적 목적 모두 자유롭게</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(255,255,255,0.05); border-radius: 10px;">
+                        <p style="font-size: 1.2rem;">
+                            <strong>"송파에서 시작되는 미래"</strong><br>
+                            <span style="opacity: 0.8;">The Future Starts in Songpa</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- UI Elements -->
+    <div class="slide-counter">
+        <span id="current-slide">1</span> / <span id="total-slides">4</span>
+    </div>
+    
+    <div class="progress-bar" id="progress-bar"></div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+        
+        function updateSlide() {
+            const slides = document.querySelectorAll('.slide');
+            
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+            
+            // Update UI
+            document.getElementById('current-slide').textContent = currentSlide + 1;
+            document.getElementById('progress-bar').style.width = `${((currentSlide + 1) / totalSlides) * 100}%`;
+        }
+        
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+        
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'ArrowRight':
+                case ' ':
+                    e.preventDefault();
+                    nextSlide();
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    prevSlide();
+                    break;
+                case 'Home':
+                    currentSlide = 0;
+                    updateSlide();
+                    break;
+                case 'End':
+                    currentSlide = totalSlides - 1;
+                    updateSlide();
+                    break;
+            }
+        });
+        
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide(); // Swipe left -> next slide
+                } else {
+                    prevSlide(); // Swipe right -> previous slide
+                }
+            }
+        }
+        
+        // Initialize
+        updateSlide();
+        
+        // Auto-advance demo (remove if not needed)
+        // setInterval(nextSlide, 5000);
+    </script>
+</body>
+</html>
