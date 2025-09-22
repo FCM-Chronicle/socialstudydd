@@ -37,7 +37,7 @@
             opacity: 0;
             transform: translateX(100%);
             transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #764ba2 100%);
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #764ba2 100%) !important;
             text-align: center;
         }
 
@@ -345,7 +345,7 @@
                         <p style="font-size: 1.6rem; line-height: 1.8; text-align: center; background: rgba(255, 255, 255, 0.1); padding: 2rem; border-radius: 15px; backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2);">
                             랜드마크인 롯데월드타워에 화살표를 추가하여<br>
                             미래지향적인 모습을 표현했습니다.<br><br>
-                            <span style="opacity: 0.8; font-size: 1.2rem;">Repository: socialstudydd</span>
+                            <span style="opacity: 0.8; font-size: 1.2rem;"></span>
                         </p>
                     </div>
                 </div>
@@ -354,8 +354,12 @@
 
         <!-- Slide 5: Thank You -->
         <div class="slide">
+            <div class="floating-element" style="width: 80px; height: 80px; top: 20%; left: 10%; animation-delay: 0s;"></div>
+            <div class="floating-element" style="width: 120px; height: 120px; top: 60%; right: 15%; animation-delay: -2s;"></div>
+            <div class="floating-element" style="width: 60px; height: 60px; bottom: 20%; left: 20%; animation-delay: -4s;"></div>
+            
             <div class="thank-you-content">
-                <h2 class="thank-you-title">감사합니다</h2>
+                <h2 style="font-size: 5rem; margin-bottom: 2rem; color: white; text-shadow: 0 0 40px rgba(255, 255, 255, 0.5); font-weight: bold;">감사합니다</h2>
             </div>
         </div>
     </div>
@@ -374,14 +378,27 @@
         function updateSlide() {
             const slides = document.querySelectorAll('.slide');
             
+            console.log('Current slide:', currentSlide);
+            console.log('Total slides found:', slides.length);
+            
             slides.forEach((slide, index) => {
                 slide.classList.remove('active', 'prev');
                 if (index === currentSlide) {
                     slide.classList.add('active');
+                    console.log('Activated slide', index);
+                    console.log('Slide background style:', window.getComputedStyle(slide).background);
                 } else if (index < currentSlide) {
                     slide.classList.add('prev');
                 }
             });
+            
+            // Check if last slide
+            if (currentSlide === totalSlides - 1) {
+                console.log('On last slide - should show 감사합니다');
+                const lastSlide = slides[currentSlide];
+                console.log('Last slide element:', lastSlide);
+                console.log('Last slide innerHTML:', lastSlide.innerHTML);
+            }
             
             // Update UI
             document.getElementById('current-slide').textContent = currentSlide + 1;
@@ -389,16 +406,24 @@
         }
         
         function nextSlide() {
+            console.log('Next slide called, current:', currentSlide);
             if (currentSlide < totalSlides - 1) {
                 currentSlide++;
+                console.log('Moving to slide:', currentSlide);
                 updateSlide();
+            } else {
+                console.log('Already at last slide');
             }
         }
         
         function prevSlide() {
+            console.log('Previous slide called, current:', currentSlide);
             if (currentSlide > 0) {
                 currentSlide--;
+                console.log('Moving to slide:', currentSlide);
                 updateSlide();
+            } else {
+                console.log('Already at first slide');
             }
         }
         
@@ -452,7 +477,17 @@
         }
         
         // Initialize
+        console.log('Initializing presentation...');
         updateSlide();
+        
+        // Debug: Check all slides on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const allSlides = document.querySelectorAll('.slide');
+            console.log('DOM loaded - found slides:', allSlides.length);
+            allSlides.forEach((slide, i) => {
+                console.log(`Slide ${i}:`, slide.innerHTML.substring(0, 100) + '...');
+            });
+        });
     </script>
 </body>
 </html>
